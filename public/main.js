@@ -40,7 +40,7 @@ window.onload = function(){
     }
 
     function changeList(newList){
-      awesomplete.list = newList;
+        awesomplete.list = newList;
     }
 
     function nothingToShow(input){
@@ -55,12 +55,12 @@ window.onload = function(){
     }
 
     input.addEventListener('input', function(){
-        if (this.value === "" || nothingToShow(this.value)) {
-            //show nothing
-        } else if (typeof sugHistory[this.value] == 'undefined') {
+        var nothing = this.value === "" || nothingToShow(this.value);
+        if (typeof sugHistory[this.value] === 'undefined' &&  !nothing) {
             inputHistory.push(this.value);
             socket.emit('ask', this.value);
-        } else {
+        }
+        else if(!nothing){
             lastId = sugHistory[this.value].id;
             changeList(sugHistory[this.value].name);
       }
