@@ -85,7 +85,7 @@ window.onload = function(){
     socket.on('reco', function(data){
         reco.innerHTML = "";
         for(var i in data) {
-            reco.innerHTML += '<div class="col-xs-6 col-md-3 col-lg-2"><img src="' + data[i].img + '" alt=""><div class="blk">' + data[i].name + '</div></div>';
+            reco.innerHTML += '<div class="col-xs-6 col-md-3 col-lg-2"><a href="#" onclick="return false;" class="thumbnail"><img src="' + data[i].img + '" alt=""><div class="blk">' + data[i].name + '</div></a></div>';
         }
     });
 }
