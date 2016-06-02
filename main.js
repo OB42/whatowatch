@@ -16,37 +16,41 @@ app.get('/', function (req, res) {
     res.status(404).send('Error 404');
 });
 server.listen(config.port, config.ip);
-io.sockets.on('connection', function(socket) {
-    var submitted = false;
-    search.init(socket);
-    var movies = {};
-    socket.on("movieInput", function(id) {
-        var ignored = Object.getOwnPropertyNames(movies);
-        movies[id] = [[], 0, 12];
-        getMovieList(id, ignored, function(similar){
-            movies[id] = [similar, 0, similar.length];
-            ignored = Object.getOwnPropertyNames(movies);
-            for (var i in similar) {
-                getMovieList(similar[i].id, ignored, function(simToSim){
-                    if (typeof movies[id] !== "undefined") {
-                        movies[id][1]++;
-                        movies[id][0] = movies[id][0].concat(simToSim);
-                        listing(submitted, movies, reco);
-                    }
-                });
-            }
+require('mongodb').MongoClient.connect(config.dbUrl(), function(err, db) {
+    if (err) throw err;
+    var movieCollection = db.collection(config.dbcollection);
+    io.sockets.on('connection', function(socket) {
+        var submitted = false;
+        search.init(socket);
+        var movies = {};
+        socket.on("movieInput", function(id) {
+            var ignored = Object.getOwnPropertyNames(movies);
+            movies[id] = [[], 0, 12];
+            getMovieList(movieCollection, id, ignored, function(similar){
+                movies[id] = [similar, 0, similar.length];
+                ignored = Object.getOwnPropertyNames(movies);
+                for (var i in similar) {
+                    getMovieList(movieCollection, similar[i].id, ignored, function(simToSim){
+                        if (typeof movies[id] !== "undefined") {
+                            movies[id][1]++;
+                            movies[id][0] = movies[id][0].concat(simToSim);
+                            listing(submitted, movies, reco);
+                        }
+                    });
+                }
+            });
         });
-    });
-    socket.on("deleteMovie", function(id) {
-        delete movies[id];
-    });
-    socket.on("submittedForm", function() {
-        submitted = true;
-        listing(true, movies, reco);
-    });
-    function reco(list) {
-        socket.emit("reco", list);
-        submitted = false;
-        movies = {};
-    }
-});
+        socket.on("deleteMovie", function(id) {
+            delete movies[id];
+        });
+        socket.on("submittedForm", function() {
+            submitted = true;
+            listing(true, movies, reco);
+        });
+        function reco(list) {
+            socket.emit("reco", list);
+            submitted = false;
+            movies = {};
+        }
+    })
+})

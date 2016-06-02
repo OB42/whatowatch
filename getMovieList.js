@@ -1,9 +1,10 @@
 var Movie = require('./Movie');
+var config = require('./config');
 var cheerio = require('cheerio');
 var http = require('http');
-function getMovies(html, toIgnore) {
-    var $ = parse(html);
+function getMovies(data, toIgnore, id, collection) {
     var temp = [];
+    var $ = parse(data);
     if ($) {
         var name = $("#sims p");
         var pageId = $("#sims li");
@@ -24,6 +25,10 @@ function getMovies(html, toIgnore) {
             }
         }
     }
+    collection.insert({timestamp: new Date().getTime(), id:id,
+    similar: temp}, function(err){
+        if(err) throw err
+    });
     return temp;
 }
 
@@ -51,21 +56,30 @@ function getOptions(id) {
     }
 }
 
-var getMovieList = function(id, ignored, callback) {
-        var options = getOptions(id);
-        http.get(options, function(res) {
-            var data = "";
-            res.resume();
-            res.on('data', function(chunk) {
-                if (res.statusCode == 200) {
-                    data += chunk;
-                }
+var getMovieList = function(collection, id, ignored, callback) {
+    collection.find({id: id}).toArray(function(err, mov){
+        if(err) throw err;
+        if(mov.length && new Date().getTime() - mov[0].timestamp < config.fetchAgain * 24 * 3600 * 1000){
+            callback(mov[0].similar);
+        }
+        else{
+            var options = getOptions(id);
+            http.get(options, function(res) {
+                var data = "";
+                res.resume();
+                res.on('data', function(chunk) {
+                    if (res.statusCode == 200) {
+                        data += chunk;
+                    }
+                });
+                res.on('end', function() {
+                    callback(getMovies(data, ignored, id, collection));
+                });
+            }).on('error', function(e) {
+                console.log("Error: " + options.host + "\n" + e.message);
             });
-            res.on('end', function() {
-                callback(getMovies(data, ignored));
-            });
-        }).on('error', function(e) {
-            console.log("Error: " + options.host + "\n" + e.message);
-        });
+        }
+    });
+
 }
 module.exports = getMovieList;

@@ -4,7 +4,8 @@ module.exports = {
     port: "8080",
     dbhost: "localhost",
     dbport: "2702",
-    dbname: "movies",
+    dbname: "whatowatch",
+    dbcollection: "movies",
     dbUrl: function(){
         return "mongodb://" + this.dbhost + ":" + this.dbport + "/" + this.dbname;
     }
