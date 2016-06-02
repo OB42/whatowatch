@@ -4,6 +4,7 @@ var io = require('socket.io').listen(server);
 var search = require('./search');
 var getMovieList = require('./getMovieList');
 var listing = require('./listing');
+var config = require('./config');
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 })
@@ -14,7 +15,7 @@ app.get('/', function (req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.status(404).send('Error 404');
 });
-server.listen(80);
+server.listen(config.port, config.ip);
 io.sockets.on('connection', function(socket) {
     var submitted = false;
     search.init(socket);
