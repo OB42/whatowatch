@@ -8,7 +8,7 @@ var listing = require('./listing');
 var config = require('./config');
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
-    fs.writeFileSync("./visits", (parseInt(fs.readFileSync("./visits")) + 1).toString());
+    fs.writeFileSync("./public/visits", (parseInt(fs.readFileSync("./public/visits")) + 1).toString());
 })
 .get('/:page', function(req, res) {
     res.sendFile(__dirname + '/public/' + req.params.page);

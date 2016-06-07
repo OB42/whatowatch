@@ -25,7 +25,7 @@ module.exports = function(submitted, movies, callback) {
                 if (reps.length < 12) {
                     for (var i in copy) {
                         for (var y = copy.length - 1; y > i; y--) {
-                            if (copy[i].id == copy[y].id) {
+                            if (copy[i].id === copy[y].id) {
                                 copy[i].rep++;
                                 copy.splice(y, 1);
                             }
@@ -38,7 +38,16 @@ module.exports = function(submitted, movies, callback) {
                                 biggest = d;
                             }
                         }
-                        reps.push(copy[biggest]);
+                        var present = false;
+                        for(var k in reps){
+                            if(reps[k].id === copy[biggest].id){
+                                present = true;
+                                break;
+                            }
+                        }
+                        if(!present){
+                            reps.push(copy[biggest]);
+                        }
                         copy.splice(biggest, 1);
                     }
                 }

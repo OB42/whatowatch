@@ -6,7 +6,8 @@
         "cheerio": "0.20.0",
         "request": "2.70.0",
         "socket.io": "1.4.5",
-        "express": "4.13.4"
+        "express": "4.13.4",
+        "mongodb": "2.1.21"
   },
   "main": "main.js"
 }
