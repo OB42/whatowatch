@@ -1,9 +1,12 @@
 var request = require('request');
+//Used to replace accents and "language specific" characters
 var removeDiacritics = require('./removeDiacritics');
 var init = function (socket) {
     socket.on('ask', function(input){
         var rawinput = input;
         var imdb = 'http://sg.media-imdb.com/suggests/';
+        /*formatting the user input, the API only accept alphanumerical characters,
+        and spaces must be replaced by underscore */
         input = removeDiacritics(input.toLowerCase().replace(/\s+/g, '_'));
         input = input.replace(/[^a-z0-9_]/g, '');
         request(imdb + input[0] +'/'+ input +'.json', function (err, res, body) {

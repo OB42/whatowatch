@@ -6,7 +6,7 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 <style>
-[hidden]{display:none}.visually-hidden{position:absolute;clip:rect(0,0,0,0)}div.awesomplete{position:relative}div.awesomplete>input{display:block}div.awesomplete>ul{position:absolute;left:0;z-index:1;min-width:100%;box-sizing:border-box;list-style:none;padding:0;border-radius:.3em;margin:.2em 0 0;background:hsla(0,0%,100%,.9);background:linear-gradient(to bottom right,#fff,hsla(0,0%,100%,.8));border:1px solid rgba(0,0,0,.3);box-shadow:.05em .2em .6em rgba(0,0,0,.2);text-shadow:none}div.awesomplete>ul:empty,div.awesomplete>ul[hidden]{display:none}@supports (transform:scale(0)){div.awesomplete>ul{transition:.3s cubic-bezier(.4,.2,.5,1.4);transform-origin:1.43em -.43em;margin-top:3em;z-index:10}div.awesomplete>ul:empty,div.awesomplete>ul[hidden]{opacity:0;transform:scale(0);display:block;transition-timing-function:ease}}div.awesomplete>ul:before{content:"";position:absolute;top:-.43em;left:1em;width:0;height:0;padding:.4em;background:#fff;border:inherit;border-right:0;border-bottom:0;-webkit-transform:rotate(45deg);transform:rotate(45deg)}div.awesomplete>ul>li{position:relative;padding:.2em .5em;cursor:pointer}div.awesomplete>ul>li:hover{background:#b7d2e0;color:#000}div.awesomplete>ul>li[aria-selected=true]{background:#3d6c8e;color:#fff}div.awesomplete mark{background:#e9ff00}div.awesomplete li:hover mark{background:#b5d100}div.awesomplete li[aria-selected=true] mark{background:#3c6b00;color:inherit}#liked i{color:grey;float:right}.thumbnail img{width:100%}.blk{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.container{margin-top:5%}.main{padding-top:1%}.jumbotron .input-group .search-bar{margin-bottom:1.5%}.jumbotron h2{display:inline-block}mark{padding:.1em}
+img[src="logo.svg"]{width:100%}[hidden]{display:none}.visually-hidden{position:absolute;clip:rect(0,0,0,0)}div.awesomplete{position:relative}div.awesomplete>input{display:block}div.awesomplete>ul{position:absolute;left:0;z-index:1;min-width:100%;box-sizing:border-box;list-style:none;padding:0;border-radius:.3em;margin:.2em 0 0;background:hsla(0,0%,100%,.9);background:linear-gradient(to bottom right,#fff,hsla(0,0%,100%,.8));border:1px solid rgba(0,0,0,.3);box-shadow:.05em .2em .6em rgba(0,0,0,.2);text-shadow:none}div.awesomplete>ul:empty,div.awesomplete>ul[hidden]{display:none}@supports (transform:scale(0)){div.awesomplete>ul{transition:.3s cubic-bezier(.4,.2,.5,1.4);transform-origin:1.43em -.43em;margin-top:3em;z-index:10}div.awesomplete>ul:empty,div.awesomplete>ul[hidden]{opacity:0;transform:scale(0);display:block;transition-timing-function:ease}}div.awesomplete>ul:before{content:"";position:absolute;top:-.43em;left:1em;width:0;height:0;padding:.4em;background:#fff;border:inherit;border-right:0;border-bottom:0;-webkit-transform:rotate(45deg);transform:rotate(45deg)}div.awesomplete>ul>li{position:relative;padding:.2em .5em;cursor:pointer}div.awesomplete>ul>li:hover{background:#b7d2e0;color:#000}div.awesomplete>ul>li[aria-selected=true]{background:#3d6c8e;color:#fff}div.awesomplete mark{background:#e9ff00}div.awesomplete li:hover mark{background:#b5d100}div.awesomplete li[aria-selected=true] mark{background:#3c6b00;color:inherit}#liked i{color:grey;float:right}.thumbnail img{width:100%}.blk{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.container{margin-top:2%}.main{padding-top:1%}.jumbotron .input-group .search-bar{margin-bottom:1.5%}.jumbotron h2{display:inline-block}mark{padding:.1em}
 </style>
 <script>
 //Autocomplete library, copyright Lea Verou: http://leaverou.github.io/awesomplete
@@ -15,12 +15,12 @@
 </head>
 <body>
     <div class="container">
-        <div class="jumbotron main">
-            <h4>Whatowatch permit you to generate a list of Films or TV shows that you may like, based on what you already like.
-            Results are more precise if you specify multiple movies OR series.</h4>
+        <div class="jumbotron main col-lg-6 col-lg-offset-3">
+            <h4>Whatowatch generate a list of Films or TV shows that you may enjoy, based on what you already like.<br>
+            Results are more precise if you specify several movies OR series.</h4>
             <div class="input-group col-lg-12 col-md-12 col-xs-12">
                 <input class="form-control search-bar" id="myinput" placeholder="Type here" type="text">
-                <form onsubmit="formSub(); return false;">
+                <form>
                 <button type="submit" id="sub" class="btn btn-default form-control">What should i watch?</button>
                 </form>
             </div>

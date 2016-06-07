@@ -1,4 +1,3 @@
-var formSub;
 window.onload = function(){
     var currentList = [];
     var lastId = [];
@@ -30,13 +29,14 @@ window.onload = function(){
         input.value = "";
     }, false)
 
-    formSub = function() {
+    document.querySelector("form").onsubmit = function(){
         if (currentList.length > 0) {
             socket.emit("submittedForm");
             var p = liked.querySelectorAll("p");
             liked.innerHTML = "";
         }
         currentList = [];
+        return false;
     }
 
     function changeList(newList){
@@ -85,7 +85,7 @@ window.onload = function(){
     socket.on('reco', function(data){
         reco.innerHTML = "";
         for(var i in data) {
-            reco.innerHTML += '<div class="col-xs-6 col-md-3 col-lg-2"><a href="#" onclick="return false;" class="thumbnail"><img src="' + data[i].img + '" alt=""><div class="blk">' + data[i].name + '</div></a></div>';
+            reco.innerHTML += '<div class="col-xs-6 col-md-3 col-lg-4"><a href="#" onclick="return false;" class="thumbnail"><img src="' + data[i].img + '" alt=""><div class="blk">' + data[i].name + '</div></a></div>';
         }
     });
 }

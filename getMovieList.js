@@ -12,6 +12,7 @@ function getMovies(data, toIgnore, id, collection) {
         for (var y = 0; y < pageId.length; y++) {
             var exist = false;
             var tempId = pageId.eq(y).attr('data-tconst').split('tt')[1];
+            //checking if the movie found wasn't selected by the user before
             for (var k in toIgnore) {
                 if (tempId == toIgnore[k]) {
                     exist = true;
@@ -35,15 +36,13 @@ function getMovies(data, toIgnore, id, collection) {
 function parse(html) {
     //Cropping the page to accelerate the parsing
     var tempString = html.substr(30000);
-    if (typeof tempString != 'undefined') {
-        if (typeof tempString.split('More Like This')[1] != 'undefined') {
-            if (typeof tempString.split('</ul>')[0] + '</ul>' != 'undefined') {
-                tempString = tempString.split('More Like This')[1].split('</ul>')[0];
-                tempString += '</ul>';
-                var $ = cheerio.load(tempString);
-                return $;
-            }
-        }
+    if (typeof tempString !== 'undefined'
+    && typeof tempString.split('More Like This')[1] !== 'undefined'
+    && typeof tempString.split('</ul>')[0] + '</ul>' !== 'undefined') {
+        tempString = tempString.split('More Like This')[1].split('</ul>')[0];
+        tempString += '</ul>';
+        var $ = cheerio.load(tempString);
+        return $;
     }
     return false;
 }
@@ -59,6 +58,7 @@ function getOptions(id) {
 var getMovieList = function(collection, id, ignored, callback) {
     collection.find({id: id}).toArray(function(err, mov){
         if(err) throw err;
+        //checking if we already fetched this movie
         if(mov.length && new Date().getTime() - mov[0].timestamp < config.fetchAgain * 24 * 3600 * 1000){
             callback(mov[0].similar);
         }

@@ -1,5 +1,6 @@
 var app = require('express')();
 var server = require('http').createServer(app);
+var fs = require('fs');
 var io = require('socket.io').listen(server);
 var search = require('./search');
 var getMovieList = require('./getMovieList');
@@ -7,6 +8,7 @@ var listing = require('./listing');
 var config = require('./config');
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
+    fs.writeFileSync("./visits", (parseInt(fs.readFileSync("./visits")) + 1).toString());
 })
 .get('/:page', function(req, res) {
     res.sendFile(__dirname + '/public/' + req.params.page);
