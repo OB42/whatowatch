@@ -4,6 +4,7 @@ var cheerio = require('cheerio');
 var http = require('http');
 function getMovies(data, toIgnore, id, collection) {
     var temp = [];
+    var toInsert = [];
     var $ = parse(data);
     if ($) {
         var name = $("#sims p");
@@ -24,10 +25,11 @@ function getMovies(data, toIgnore, id, collection) {
                 var imgUrl = img.eq(y).attr("src");
                 temp.push(new Movie(tempId, title, 0, imgUrl));
             }
+            toInsert.push(new Movie(tempId, title, 0, imgUrl));
         }
     }
     collection.insert({timestamp: new Date().getTime(), id:id,
-    similar: temp}, function(err){
+    similar: toInsert}, function(err){
         if(err) throw err
     });
     return temp;
@@ -60,7 +62,20 @@ var getMovieList = function(collection, id, ignored, callback) {
         if(err) throw err;
         //checking if we already fetched this movie
         if(mov.length && new Date().getTime() - mov[0].timestamp < config.fetchAgain * 24 * 3600 * 1000){
-            callback(mov[0].similar);
+            var toSend = [];
+            mov[0].similar.filter(function(e){
+                var present = false;
+                for(var i = 0; i < ignored.length; i++){
+                    if(e.id === ignored[i]){
+                        present = true;
+                        break;
+                    }
+                }
+                if(!present){
+                    toSend.push(e);
+                }
+            })
+            callback(toSend);
         }
         else{
             var options = getOptions(id);

@@ -6,9 +6,9 @@ var search = require('./search');
 var getMovieList = require('./getMovieList');
 var listing = require('./listing');
 var config = require('./config');
+var mongo = require('mongodb');
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
-    fs.writeFileSync("./public/visits", (parseInt(fs.readFileSync("./public/visits")) + 1).toString());
 })
 .get('/:page', function(req, res) {
     res.sendFile(__dirname + '/public/' + req.params.page);
@@ -18,10 +18,14 @@ app.get('/', function (req, res) {
     res.status(404).send('Error 404');
 });
 server.listen(config.port, config.ip);
-require('mongodb').MongoClient.connect(config.dbUrl(), function(err, db) {
+mongo.MongoClient.connect(config.dbUrl(), function(err, db) {
     if (err) throw err;
     var movieCollection = db.collection(config.dbcollection);
+    var ips = db.collection("ips");
     io.sockets.on('connection', function(socket) {
+        ips.insert({ip: socket.handshake.address}, function(err){
+            if(err) throw err;
+        })
         var submitted = false;
         search.init(socket);
         var movies = {};
