@@ -21,11 +21,7 @@ server.listen(config.port, config.ip);
 mongo.MongoClient.connect(config.dbUrl(), function(err, db) {
     if (err) throw err;
     var movieCollection = db.collection(config.dbcollection);
-    var ips = db.collection("ips");
     io.sockets.on('connection', function(socket) {
-        ips.insert({ip: socket.handshake.address}, function(err){
-            if(err) throw err;
-        })
         var submitted = false;
         search.init(socket);
         var movies = {};
